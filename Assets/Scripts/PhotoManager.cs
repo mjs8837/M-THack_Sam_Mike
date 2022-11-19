@@ -15,15 +15,15 @@ public class PhotoManager : MonoBehaviour
 
     private List<GameObject> displayedPictures;
 
-    private GameObject currentImage;
-
     [SerializeField] enum PictureType { encouraging, neutral, calming, puppy };
     private PictureType currentPictureType = PictureType.encouraging;
 
-    float switchTimer = 10.0f;
-    private float timeReset = 10.0f;
+    [SerializeField] float switchTimer = 1.0f;
+    private float timeReset = 1.0f;
 
-    private int currentPictureIndex = 1;
+    [SerializeField] int currentPictureIndex = 0;
+
+    private float currentOpacity = 1.0f;
 
     private float currentTimeHour;
     private float currentTimeMinute;
@@ -55,8 +55,7 @@ public class PhotoManager : MonoBehaviour
                 break;
         }
 
-        currentImage = displayedPictures[0];
-        currentImage.SetActive(true);
+        displayedPictures[currentPictureIndex].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     // Update is called once per frame
@@ -72,7 +71,7 @@ public class PhotoManager : MonoBehaviour
         {
             GameObject tempPicture = Instantiate(prefabList[i]);
             displayedPictures.Add(tempPicture);
-            tempPicture.SetActive(false);
+            tempPicture.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         }
     }
 
@@ -85,13 +84,33 @@ public class PhotoManager : MonoBehaviour
         }
         else
         {
-            currentImage.SetActive(false);
-            currentImage = displayedPictures[currentPictureIndex];
-            currentImage.SetActive(true);
-            if (currentPictureIndex < displayedPictures.Count - 1) { currentPictureIndex++; }
-            else { currentPictureIndex = 0; }
-            
-            switchTimer = timeReset;
+            if (currentOpacity > 0.0f)
+            {
+                currentOpacity -= Time.deltaTime / 4.0f;
+
+                if (currentPictureIndex < displayedPictures.Count - 1)
+                {
+                    displayedPictures[currentPictureIndex].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, currentOpacity);
+                    displayedPictures[currentPictureIndex + 1].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f - currentOpacity);           
+                }
+                else
+                {
+                    displayedPictures[0].GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f - currentOpacity);
+                }
+            }
+
+            else
+            {
+                currentOpacity = 1.0f;
+                switchTimer = timeReset;
+
+                // Setting the index if it reaches the end of the current list
+                if (currentPictureIndex < displayedPictures.Count - 1)
+                {
+                    currentPictureIndex++;
+                }
+                else { currentPictureIndex = 0; }
+            }
         }
     }
 
@@ -108,7 +127,15 @@ public class PhotoManager : MonoBehaviour
         }
 
         currentTimeMinute = DateTime.Now.Minute;
-        currentTime = currentTimeHour.ToString() + ":" + currentTimeMinute.ToString();
+
+        if (currentTimeMinute < 10)
+        {
+            currentTime = currentTimeHour.ToString() + ":0" + currentTimeMinute.ToString();
+        }
+        else
+        {
+            currentTime = currentTimeHour.ToString() + ":" + currentTimeMinute.ToString();
+        }      
         timeText.GetComponent<TextMeshPro>().text = currentTime;
     }
 }
