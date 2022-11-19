@@ -17,18 +17,30 @@ public class TaskManager : MonoBehaviour
 
     private float currentTimeHour;
     private float currentTimeMinute;
+
+    private float timerHour;
+    private float timerMinute;
    
-    private string currentTime;
+    private string timer;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Task tempTask1 = new Task("Homework", new Vector2(17,00), new Vector2(18,30));
+        //Task tempTask2 = new Task("Nap", new Vector2(19, 50), new Vector2(20, 30));
+        Task tempTask3 = new Task("Exam", new Vector2(10, 00), new Vector2(11, 50));
+
+        //tasks.Add(tempTask1);
+        //tasks.Add(tempTask2);
+        tasks.Add(tempTask3);
+
+        SetCurrentTask();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(currentTask);
         if (currentTask <= tasks.Count - 1)
         {
             SetTimeAndTask();
@@ -40,31 +52,68 @@ public class TaskManager : MonoBehaviour
         currentTimeHour = DateTime.Now.Hour;
         currentTimeMinute = DateTime.Now.Minute;
 
+
+        string tempString = currentTimeHour.ToString() + currentTimeMinute.ToString();
+        if (currentTimeMinute == 0)
+            tempString = tempString + "0";
+        int.TryParse(tempString, out int currentTime);
+
+        tempString = tasks[currentTask].beginningTime.x.ToString() + tasks[currentTask].beginningTime.y.ToString();
+        if (tasks[currentTask].beginningTime.y == 0)
+            tempString = tempString + "0";
+        int.TryParse(tempString, out int beginningTime);
+
+        tempString = tasks[currentTask].endingTime.x.ToString() + tasks[currentTask].endingTime.y.ToString();
+        if (tasks[currentTask].endingTime.y == 0)
+            tempString = tempString + "0";
+        int.TryParse(tempString, out int endingTime);
+
+        //Debug.Log(currentTime > beginningTime);
+        //Debug.Log("Current time " + currentTime);
+        //Debug.Log("Beginning time " + beginningTime);
+        //Debug.Log("Ending time " + endingTime);
+
+
         //After beginning timer and before ending timer
-        if (currentTimeHour > tasks[currentTask].beginningTime.x && currentTimeMinute > tasks[currentTask].beginningTime.y
-            && currentTimeHour < tasks[currentTask].endingTime.x && currentTimeMinute < tasks[currentTask].endingTime.y)
+        if (currentTime > beginningTime
+            && currentTime < endingTime)
         {
-            currentTimeMinute = DateTime.Now.Minute;
-            currentTime = currentTimeHour.ToString() + ":" + currentTimeMinute.ToString();
-            
+            Debug.Log("Running during");
+            timerHour = tasks[currentTask].endingTime.x - currentTimeHour;
+            timerMinute = tasks[currentTask].endingTime.y - currentTimeMinute;
+
+            if(timerMinute < 0)
+            {
+                timerHour--;
+                timerMinute = 60 + tasks[currentTask].endingTime.y - currentTimeMinute;
+            }
+
+            FindTimerText();
         }
         //Before beginning timer
-        else if (currentTimeHour < tasks[currentTask].beginningTime.x)
+        else if (currentTime < beginningTime)
         {
+            Debug.Log("Running before");
+            timerHour = tasks[currentTask].beginningTime.x - currentTimeHour;
+            timerMinute = tasks[currentTask].beginningTime.y - currentTimeMinute;
 
-        }
-        //Before beginning timer, but accounting for same hour, but less minutes
-        else if (currentTimeHour == tasks[currentTask].beginningTime.x && currentTimeMinute < tasks[currentTask].beginningTime.y)
-        {
+            Debug.Log(timerMinute);
 
+            if (timerMinute < 0)
+            {
+                timerHour--;
+                timerMinute = 60 + tasks[currentTask].beginningTime.y - currentTimeMinute;
+            }
+
+            FindTimerText();
         }
         //Move to next task
         else
         {
+            Debug.Log("Running after");
             currentTask++;
-            SetCurrentTask();
+            SetCurrentTask();          
         }
-
     }
 
     void SetCurrentTask()
@@ -77,7 +126,35 @@ public class TaskManager : MonoBehaviour
         }
         else
         {
-            currentTaskText.GetComponent<TextMeshPro>().text = "Current Task: " + tasks[currentTask];
+            currentTaskText.GetComponent<TextMeshPro>().text = "Current Task: " + tasks[currentTask].taskType;
         }
+    }
+
+    void FindTimerText()
+    {
+        if (timerHour > 10)
+        {
+            if (timerMinute > 10)
+            {
+                timer = timerHour.ToString() + ":" + timerMinute.ToString();
+            }
+            else
+            {
+                timer = timerHour.ToString() + ":0" + timerMinute.ToString();
+            }
+        }
+        else
+        {
+            if (timerMinute > 10)
+            {
+                timer = "0" + timerHour.ToString() + ":" + timerMinute.ToString();
+            }
+            else
+            {
+                timer = "0" + timerHour.ToString() + ":0" + timerMinute.ToString();
+            }
+        }
+
+        timerText.GetComponent<TextMeshPro>().text = timer;
     }
 }
