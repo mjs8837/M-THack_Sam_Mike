@@ -20,7 +20,7 @@ public class PhotoManager : MonoBehaviour
     [SerializeField] enum PictureType { encouraging, neutral, calming, puppy };
     private PictureType currentPictureType = PictureType.encouraging;
 
-    [SerializeField] float switchTimer = 10.0f;
+    float switchTimer = 10.0f;
     private float timeReset = 10.0f;
 
     private int currentPictureIndex = 1;
@@ -85,44 +85,17 @@ public class PhotoManager : MonoBehaviour
         }
         else
         {
-            // Code to reset photo here based on photo type
-            switch(currentPictureType)
-            {
-                case PictureType.encouraging:
-
-                    // Code for displaying encouraging pictures
-                    //currentImage.GetComponent<Image>().sprite = encouragingPictures[currentPictureIndex].GetComponent<SpriteRenderer>().sprite;
-                    //currentImage.GetComponent<Image>().SetNativeSize();
-                    //currentImage = Instantiate(encouragingPictures[currentPictureIndex]);
-
-                    Debug.Log(currentImage);
-
-                    if (currentPictureIndex < encouragingPictures.Count)
-                    {
-                        currentPictureIndex++;
-                    }
-                    else
-                    {
-                        currentPictureIndex = 0;
-                    }
-
-                    break;
-
-                case PictureType.neutral:
-                    // Code for displaying neutral pictures
-                    break;
-                case PictureType.calming:
-                    // Code for displaying calming pictures
-                    break;
-                case PictureType.puppy:
-                    // Code for displaying calming pictures
-                    break;
-            }
-
+            currentImage.SetActive(false);
+            currentImage = displayedPictures[currentPictureIndex];
+            currentImage.SetActive(true);
+            if (currentPictureIndex < displayedPictures.Count - 1) { currentPictureIndex++; }
+            else { currentPictureIndex = 0; }
+            
             switchTimer = timeReset;
         }
     }
 
+    // Helper function to set the current time and display it on screen
     private void SetCurrentTime()
     {
         if (DateTime.Now.Hour > 12)
@@ -137,6 +110,5 @@ public class PhotoManager : MonoBehaviour
         currentTimeMinute = DateTime.Now.Minute;
         currentTime = currentTimeHour.ToString() + ":" + currentTimeMinute.ToString();
         timeText.GetComponent<TextMeshPro>().text = currentTime;
-        //Debug.Log(currentTime);
     }
 }
