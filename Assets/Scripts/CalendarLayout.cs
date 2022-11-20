@@ -12,6 +12,8 @@ public class CalendarLayout : MonoBehaviour
     [SerializeField] Camera mainCamera;
     [SerializeField] Canvas canvas;
 
+    public List<GameObject> hourBreakList;
+
     private int numRows = 18;
 
     // Start is called before the first frame update
@@ -22,13 +24,14 @@ public class CalendarLayout : MonoBehaviour
         for (int i = 0; i < numRows; i++)
         {
             GameObject tempRow = Instantiate(rowPrefab);
-            tempRow.transform.position = new Vector3(-3.8f, 3.3f - i, 0.0f);
+            tempRow.transform.position = new Vector3(-3.7f, 3.1f - i, 0.0f);
 
             GameObject tempHourBreak = Instantiate(hourBreak);
-            tempHourBreak.transform.position = new Vector3(-3.8f, 3.8f - i, -1.0f);
+            tempHourBreak.transform.position = new Vector3(-3.7f, 2.6f - i, -1.0f);
+            hourBreakList.Add(tempHourBreak);
 
             GameObject tempHourMark = Instantiate(timePrefab);
-            tempHourMark.transform.position = new Vector3(-11.0f, 2.8f - i, -1.0f);
+            tempHourMark.transform.position = new Vector3(-9.4f, 2.6f - i, -1.0f);
 
             if (timeValue < 13)
             {
@@ -46,7 +49,7 @@ public class CalendarLayout : MonoBehaviour
         }
 
         GameObject downwardLine = Instantiate(hourBreak);
-        downwardLine.transform.position = new Vector3(-8.0f, -5.2f, -1.0f);
+        downwardLine.transform.position = new Vector3(-6.4f, -5.4f, -1.0f);
         downwardLine.transform.localScale = new Vector3(18.0f, 0.01f, 1.0f);
         downwardLine.transform.eulerAngles = new Vector3(0.0f, 0.0f, 90.0f);
     }

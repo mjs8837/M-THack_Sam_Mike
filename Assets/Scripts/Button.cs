@@ -40,7 +40,7 @@ public class Button : MonoBehaviour
         {
             try
             {
-                taskCreator.GetComponent<TaskCreator>().CreateTask();
+                taskCreator.GetComponent<TaskCreator>().WriteTaskToFile();
             }
             catch
             {
