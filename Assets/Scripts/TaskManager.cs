@@ -34,8 +34,8 @@ public class TaskManager : MonoBehaviour
     void Start()
     {
 
-        //Task tempTask1 = new Task("Homework", new Vector2(17,00), new Vector2(18,30));
-        Task tempTask2 = new Task("Nap", new Vector2(00, 00), new Vector2(00, 00));
+        Task tempTask1 = new Task("Homework", new Vector2(12,00), new Vector2(02,30));
+        Task tempTask2 = new Task("Nap", new Vector2(16, 30), new Vector2(18, 00));
         Task tempTask3 = new Task("Exam", new Vector2(10, 00), new Vector2(11, 50));
 
         //tasks.Add(tempTask1);
