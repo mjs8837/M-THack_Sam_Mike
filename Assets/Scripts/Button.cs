@@ -7,6 +7,9 @@ public class Button : MonoBehaviour
 {
     private GameObject taskCreator = null;
 
+    public GameObject tasksButton;
+    public GameObject statsButton;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,20 +24,24 @@ public class Button : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+        //GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
     }
 
     private void OnMouseExit()
     {
-        GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        //GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    private void OnMouseDown()
+/*    private void OnMouseDown()
     {
         if (gameObject.tag == "sceneButton")
         {
-            string[] objectName = gameObject.name.Split(" ");
-            SceneManager.LoadScene(objectName[0]);
+            //string[] objectName = gameObject.name.Split(" ");
+            SceneManager.LoadScene("Scheduling");
+        }
+        else if(gameObject.tag == "statsButton")
+        {
+            SceneManager.LoadScene("Stats");
         }
         else
         {
@@ -47,5 +54,15 @@ public class Button : MonoBehaviour
                 Debug.Log("Task Creator is null");
             }
         }
+    }*/
+
+    public void TaskScene()
+    {
+        SceneManager.LoadScene("Scheduling");
+    }
+
+    public void StatsScene()
+    {
+        SceneManager.LoadScene("Stats");
     }
 }
