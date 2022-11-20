@@ -27,14 +27,12 @@ public class TaskManager : MonoBehaviour
     void Start()
     {
         //Task tempTask1 = new Task("Homework", new Vector2(17,00), new Vector2(18,30));
-        //Task tempTask2 = new Task("Nap", new Vector2(19, 50), new Vector2(20, 30));
+        Task tempTask2 = new Task("Nap", new Vector2(20, 30), new Vector2(20, 30));
         Task tempTask3 = new Task("Exam", new Vector2(10, 00), new Vector2(11, 50));
 
         //tasks.Add(tempTask1);
-        //tasks.Add(tempTask2);
+        tasks.Add(tempTask2);
         tasks.Add(tempTask3);
-
-        SetCurrentTask();
     }
 
     // Update is called once per frame
@@ -88,6 +86,7 @@ public class TaskManager : MonoBehaviour
                 timerMinute = 60 + tasks[currentTask].endingTime.y - currentTimeMinute;
             }
 
+            SetCurrentTask(false);
             FindTimerText();
         }
         //Before beginning timer
@@ -105,6 +104,7 @@ public class TaskManager : MonoBehaviour
                 timerMinute = 60 + tasks[currentTask].beginningTime.y - currentTimeMinute;
             }
 
+            SetCurrentTask(true);
             FindTimerText();
         }
         //Move to next task
@@ -112,17 +112,21 @@ public class TaskManager : MonoBehaviour
         {
             Debug.Log("Running after");
             currentTask++;
-            SetCurrentTask();          
+            SetCurrentTask(false);          
         }
     }
 
-    void SetCurrentTask()
+    void SetCurrentTask(bool isBefore)
     {
         if(currentTask > tasks.Count - 1)
         {
             currentTaskText.GetComponent<TextMeshPro>().text = "";
             timerText.GetComponent<TextMeshPro>().fontSize = 36;
             timerText.GetComponent<TextMeshPro>().text = "Tasks Complete!";
+        }
+        else if (isBefore)
+        {
+            currentTaskText.GetComponent<TextMeshPro>().text = "Time Remaining Till: " + tasks[currentTask].taskType;
         }
         else
         {
