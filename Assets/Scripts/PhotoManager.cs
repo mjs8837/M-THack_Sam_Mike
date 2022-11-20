@@ -17,11 +17,11 @@ public class PhotoManager : MonoBehaviour
 
     // Enum for type of pictures to display
     public enum PictureType { encouraging, neutral, calming, puppy };
-    public PictureType currentPictureType = PictureType.encouraging;
+    public PictureType currentPictureType = PictureType.puppy;
 
     // Timer fields
-    float switchTimer = 10.0f;
-    private float timeReset = 10.0f;
+    float switchTimer = 1.0f;
+    private float timeReset = 1.0f;
 
     // Picture related fields
     private int currentPictureIndex = 0;
