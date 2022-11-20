@@ -31,6 +31,11 @@ public class TaskCreator : MonoBehaviour
     int startMinuteIndex;
     int endMinuteIndex;
 
+    private void Awake()
+    {
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
