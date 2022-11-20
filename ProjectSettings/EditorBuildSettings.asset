@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scheduling.unity
     guid: 0e0541810fc492445b667b9c2c11fc8d
+  - enabled: 1
+    path: Assets/Scenes/Stats.unity
+    guid: 55668506aa216ba4488c72eba19d813c
   m_configObjects: {}
