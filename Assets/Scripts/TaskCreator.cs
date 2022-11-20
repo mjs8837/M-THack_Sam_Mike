@@ -36,6 +36,7 @@ public class TaskCreator : MonoBehaviour
     float startMinuteFloat;
     float endHourFloat;
     float endMinuteFloat;
+    string taskName;
 
     public static TaskCreator taskCreator;
 
@@ -50,7 +51,7 @@ public class TaskCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        taskName = taskInput.GetComponent<TMP_InputField>().text;
     }
 
     public void AddTaskToCalendar()
@@ -108,6 +109,12 @@ public class TaskCreator : MonoBehaviour
 
         Task newTask = new Task(taskInput.GetComponent<TMP_InputField>().text, new Vector2(startHourFloat, startMinuteFloat), new Vector2(endHourFloat, endMinuteFloat));
         taskList.Add(newTask);
+
+        PlayerPrefs.SetFloat("Task-" + taskList.Count + "-StartHour", startHourFloat);
+        PlayerPrefs.SetFloat("Task-" + taskList.Count + "-EndHour", endHourFloat);
+        PlayerPrefs.SetFloat("Task-" + taskList.Count + "StartMinute", startMinuteFloat);
+        PlayerPrefs.SetFloat("Task-" + taskList.Count + "EndMinute", endMinuteFloat);
+        PlayerPrefs.SetString("Task-" + taskList.Count + "-Name", taskName);
     }
 
     public void SwtichScene()
@@ -125,11 +132,6 @@ public class TaskCreator : MonoBehaviour
 
             taskWriter.Close();
         }*/
-        for (int i = 0; i < taskList.Count; i++)
-        {
-            PlayerPrefs.SetFloat("Task-" + i + "-StartHour", startHourFloat);
-            PlayerPrefs.SetFloat("Task-" + i + "-EndHour", endHourFloat);
-        }
 
         SceneManager.LoadScene("MainScene");
     }

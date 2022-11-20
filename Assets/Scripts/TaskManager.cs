@@ -25,9 +25,15 @@ public class TaskManager : MonoBehaviour
 
     TaskCreator taskCreator;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+
         //Task tempTask1 = new Task("Homework", new Vector2(17,00), new Vector2(18,30));
         Task tempTask2 = new Task("Nap", new Vector2(00, 00), new Vector2(00, 00));
         Task tempTask3 = new Task("Exam", new Vector2(10, 00), new Vector2(11, 50));
@@ -35,6 +41,19 @@ public class TaskManager : MonoBehaviour
         //tasks.Add(tempTask1);
         tasks.Add(tempTask2);
         tasks.Add(tempTask3);
+
+        for (int i = 0; i < PlayerPrefs.GetInt("NumTasks"); i++)
+        {
+            tasks.Add(new Task
+                (PlayerPrefs.GetString("Task-" + i + "-Name"),
+                new Vector2(PlayerPrefs.GetFloat("Task-" + i + "-StartHour"), PlayerPrefs.GetFloat("Task-" + i + "-StartMinute")),
+                new Vector2(PlayerPrefs.GetFloat("Task-" + i + "-EndHour"), PlayerPrefs.GetFloat("Task-" + i + "-EndMinute"))));
+        }
+
+        for (int i = 0; i < tasks.Count; i++)
+        {
+            Debug.Log(tasks[i].taskType);
+        }
     }
 
     // Update is called once per frame
