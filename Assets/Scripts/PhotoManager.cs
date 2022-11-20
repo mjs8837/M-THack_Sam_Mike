@@ -16,8 +16,8 @@ public class PhotoManager : MonoBehaviour
     private List<GameObject> displayedPictures;
 
     // Enum for type of pictures to display
-    [SerializeField] enum PictureType { encouraging, neutral, calming, puppy };
-    private PictureType currentPictureType = PictureType.encouraging;
+    public enum PictureType { encouraging, neutral, calming, puppy };
+    public PictureType currentPictureType = PictureType.encouraging;
 
     // Timer fields
     float switchTimer = 10.0f;
