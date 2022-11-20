@@ -23,6 +23,8 @@ public class TaskManager : MonoBehaviour
    
     private string timer;
 
+    TaskCreator taskCreator;
+
     // Start is called before the first frame update
     void Start()
     {

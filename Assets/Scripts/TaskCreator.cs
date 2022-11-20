@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TaskCreator : MonoBehaviour
 {
@@ -31,10 +32,12 @@ public class TaskCreator : MonoBehaviour
     int startMinuteIndex;
     int endMinuteIndex;
 
-    private void Awake()
-    {
-        
-    }
+    float startHourFloat;
+    float startMinuteFloat;
+    float endHourFloat;
+    float endMinuteFloat;
+
+    public static TaskCreator taskCreator;
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +55,6 @@ public class TaskCreator : MonoBehaviour
 
     public void AddTaskToCalendar()
     {
-        float startHourFloat = new float();
-        float endHourFloat = new float();
         float yPos = new float();
 
         startHourIndex = startHourDropDown.GetComponent<TMP_Dropdown>().value;
@@ -77,8 +78,8 @@ public class TaskCreator : MonoBehaviour
         }
         
         
-        float.TryParse(startMinuteDropDown.GetComponent<TMP_Dropdown>().options[startMinuteIndex].text, out float startMinuteFloat);
-        float.TryParse(endMinuteDropDown.GetComponent<TMP_Dropdown>().options[endMinuteIndex].text, out float endMinuteFloat);
+        float.TryParse(startMinuteDropDown.GetComponent<TMP_Dropdown>().options[startMinuteIndex].text, out startMinuteFloat);
+        float.TryParse(endMinuteDropDown.GetComponent<TMP_Dropdown>().options[endMinuteIndex].text, out endMinuteFloat);
 
         float totalHours = endHourFloat - startHourFloat;
 
@@ -109,9 +110,9 @@ public class TaskCreator : MonoBehaviour
         taskList.Add(newTask);
     }
 
-    public void WriteTaskToFile()
+    public void SwtichScene()
     {
-        if (!startMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded && !endMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded)
+        /*if (!startMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded && !endMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded)
         {
             // Set up some checks in here to only write a task if conditions are met
             taskWriter = new StreamWriter(taskPath, true);
@@ -123,6 +124,13 @@ public class TaskCreator : MonoBehaviour
             taskWriter.WriteLine(endHour[0] + ":" + endMinuteDropDown.GetComponent<TMP_Dropdown>().options[endMinuteIndex].text + endHour[1]);
 
             taskWriter.Close();
+        }*/
+        for (int i = 0; i < taskList.Count; i++)
+        {
+            PlayerPrefs.SetFloat("Task-" + i + "-StartHour", startHourFloat);
+            PlayerPrefs.SetFloat("Task-" + i + "-EndHour", endHourFloat);
         }
+
+        SceneManager.LoadScene("MainScene");
     }
 }
