@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 52a17a0baf496a04d9183cda7e4b38fe
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Rubik Mono One
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: fd50d11589b4ce54b9842ffe723bf36a, type: 3}
+  - {fileID: 12800000, guid: 8184747a222652c4b9571b5df12d8b1d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

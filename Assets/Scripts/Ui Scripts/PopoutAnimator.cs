@@ -6,8 +6,11 @@ public class PopoutAnimator : MonoBehaviour
 {
     public GameObject PanelMenu;
 
+
+
     public void ShowHideMenu()
     {
+        Debug.Log("Button Pressed");
         if (PanelMenu != null)
         {
             Animator animator = PanelMenu.GetComponent<Animator>();
