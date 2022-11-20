@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
+    private GameObject taskCreator = null;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        taskCreator = GameObject.Find("TaskCreation");
     }
 
     // Update is called once per frame
@@ -29,7 +31,21 @@ public class Button : MonoBehaviour
 
     private void OnMouseDown()
     {
-        string[] objectName = gameObject.name.Split(" ");
-        SceneManager.LoadScene(objectName[0]);
+        if (gameObject.tag == "sceneButton")
+        {
+            string[] objectName = gameObject.name.Split(" ");
+            SceneManager.LoadScene(objectName[0]);
+        }
+        else
+        {
+            try
+            {
+                taskCreator.GetComponent<TaskCreator>().CreateTask();
+            }
+            catch
+            {
+                Debug.Log("Task Creator is null");
+            }
+        }
     }
 }
