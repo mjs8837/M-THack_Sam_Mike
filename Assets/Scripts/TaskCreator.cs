@@ -95,13 +95,15 @@ public class TaskCreator : MonoBehaviour
             totalMinutes += endMinuteFloat - startMinuteFloat;
         }
 
-        yPos = hourBreaks[startHourDropDown.GetComponent<TMP_Dropdown>().value].transform.position.y + 1.0f;
         float multiplier = totalMinutes / 60.0f;
+        float minuteOffset = startMinuteFloat / 60.0f;
 
-        if (multiplier < 1.0f)
-        {
-            yPos = hourBreaks[startHourDropDown.GetComponent<TMP_Dropdown>().value].transform.position.y + 0.5f;
-        }
+        yPos = hourBreaks[startHourDropDown.GetComponent<TMP_Dropdown>().value].transform.position.y + 1.0f - minuteOffset;
+
+        /*
+            10:30AM - 1:45PM = 195min
+            6:30AM - 8:00AM = 90min
+        */
 
         GameObject tempCalendarFill = Instantiate(fillInCalendarPrefab);
         tempCalendarFill.transform.position = new Vector3(-2.6f, yPos, -1.0f);

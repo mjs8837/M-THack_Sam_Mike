@@ -39,7 +39,10 @@ public class CalendarLayout : MonoBehaviour
                 {
                     tempHourMark.GetComponent<TextMeshPro>().text = timeValue.ToString() + " PM";
                 }
-                tempHourMark.GetComponent<TextMeshPro>().text = timeValue.ToString() + " AM";
+                else
+                {
+                    tempHourMark.GetComponent<TextMeshPro>().text = timeValue.ToString() + " AM";
+                }
             }
             else
             {
