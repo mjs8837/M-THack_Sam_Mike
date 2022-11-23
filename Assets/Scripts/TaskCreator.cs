@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class TaskCreator : MonoBehaviour
 {
+    // Prefabs to clone
     [SerializeField] GameObject createTaskButton;
     [SerializeField] GameObject taskInput;
     [SerializeField] GameObject startHourDropDown;
@@ -15,18 +16,17 @@ public class TaskCreator : MonoBehaviour
     [SerializeField] GameObject endMinuteDropDown;
     [SerializeField] GameObject fillInCalendarPrefab;
 
-    private StreamWriter taskWriter;
-
     [SerializeField] GameObject calendarLayout;
 
+    // Relavent lists
     private List<GameObject> hourBreaks;
-    public List<Task> taskList;
+    public List<GameObject> taskList;
 
-    private string taskPath = "taskList.txt";
-
+    // Split strings for calculating start and end hour
     string[] startHour;
     string[] endHour;
 
+    // Time calculating variables
     int startHourIndex;
     int endHourIndex;
     int startMinuteIndex;
@@ -45,7 +45,7 @@ public class TaskCreator : MonoBehaviour
     {
         hourBreaks = new List<GameObject>();
         hourBreaks = calendarLayout.GetComponent<CalendarLayout>().hourBreakList;
-        taskList = new List<Task>();
+        taskList = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -100,23 +100,27 @@ public class TaskCreator : MonoBehaviour
 
         yPos = hourBreaks[startHourDropDown.GetComponent<TMP_Dropdown>().value].transform.position.y + 1.0f - minuteOffset;
 
-        /*
-            10:30AM - 1:45PM = 195min
-            6:30AM - 8:00AM = 90min
-        */
-
         GameObject tempCalendarFill = Instantiate(fillInCalendarPrefab);
         tempCalendarFill.transform.position = new Vector3(-2.6f, yPos, -1.0f);
         tempCalendarFill.transform.localScale = new Vector3(7.0f, multiplier, 1.0f);
 
-        Task newTask = new Task(taskInput.GetComponent<TMP_InputField>().text, new Vector2(startHourFloat, startMinuteFloat), new Vector2(endHourFloat, endMinuteFloat));
-        taskList.Add(newTask);
+        AddTaskToList(taskInput.GetComponent<TMP_InputField>().text, new Vector2(startHourFloat, startMinuteFloat), new Vector2(endHourFloat, endMinuteFloat));
 
         PlayerPrefs.SetFloat("Task-" + taskList.Count + "-StartHour", startHourFloat);
         PlayerPrefs.SetFloat("Task-" + taskList.Count + "-EndHour", endHourFloat);
         PlayerPrefs.SetFloat("Task-" + taskList.Count + "StartMinute", startMinuteFloat);
         PlayerPrefs.SetFloat("Task-" + taskList.Count + "EndMinute", endMinuteFloat);
         PlayerPrefs.SetString("Task-" + taskList.Count + "-Name", taskName);
+    }
+
+    private void AddTaskToList(string taskName, Vector2 startTime, Vector2 endTime)
+    {
+        GameObject newTask = new GameObject();
+        newTask.AddComponent<Task>();
+        newTask.GetComponent<Task>().taskType = taskName;
+        newTask.GetComponent<Task>().beginningTime = startTime;
+        newTask.GetComponent<Task>().endingTime = endTime;
+        taskList.Add(newTask);
     }
 
     public void SwtichScene()
