@@ -8,13 +8,13 @@ using UnityEngine.SceneManagement;
 public class TaskCreator : MonoBehaviour
 {
     // Prefabs to clone
-    [SerializeField] GameObject createTaskButton;
     [SerializeField] GameObject taskInput;
     [SerializeField] GameObject startHourDropDown;
     [SerializeField] GameObject endHourDropDown;
     [SerializeField] GameObject startMinuteDropDown;
     [SerializeField] GameObject endMinuteDropDown;
     [SerializeField] GameObject fillInCalendarPrefab;
+    [SerializeField] GameObject errorTextPrefab;
 
     [SerializeField] GameObject calendarLayout;
 
@@ -32,11 +32,17 @@ public class TaskCreator : MonoBehaviour
     int startMinuteIndex;
     int endMinuteIndex;
 
+    float timeErrorTextTimer = 5.0f;
+    float taskErrorTextTimer = 5.0f;
+
     float startHourFloat;
     float startMinuteFloat;
     float endHourFloat;
     float endMinuteFloat;
     string taskName;
+
+    GameObject timeErrorText;
+    GameObject taskErrorText;
 
     public static TaskCreator taskCreator;
 
@@ -52,6 +58,7 @@ public class TaskCreator : MonoBehaviour
     void Update()
     {
         taskName = taskInput.GetComponent<TMP_InputField>().text;
+        CountErrorTimer();
     }
 
     public void AddTaskToCalendar()
@@ -89,12 +96,6 @@ public class TaskCreator : MonoBehaviour
 
         float totalMinutes = totalHours * 60.0f;
 
-        // Breaking out of the function if the user tries to create a task with negative or zero time
-        if (totalMinutes <= 0.0f)
-        {
-            return;
-        }
-
         // Checking if the minute value should be added or subracted from the total minutes
         if (startMinuteFloat > endMinuteFloat)
         {
@@ -103,6 +104,23 @@ public class TaskCreator : MonoBehaviour
         else
         {
             totalMinutes += endMinuteFloat - startMinuteFloat;
+        }
+
+        // Breaking out of the function if the user tries to create a task with negative or zero time
+        if (totalMinutes <= 0.0f)
+        {
+            if (timeErrorText == null && taskErrorText == null)
+            {
+                timeErrorText = Instantiate(errorTextPrefab);
+                timeErrorText.name = "TimeErrorText";
+                timeErrorText.transform.position = new Vector3(0.0f, 0.0f, -1.0f);
+            }
+            else
+            {
+                timeErrorTextTimer = 5.0f;
+            }
+
+            return;
         }
 
         // Setting up scale and position values
@@ -163,6 +181,34 @@ public class TaskCreator : MonoBehaviour
         PlayerPrefs.SetString("Task-" + taskList.Count + "-Name", taskName); 
      */
     }
+    
+    private void CountErrorTimer()
+    {
+        if (timeErrorText != null)
+        {
+            if (timeErrorTextTimer > 0.0f)
+            {
+                timeErrorTextTimer -= Time.deltaTime;
+            }
+            else
+            {
+                timeErrorTextTimer = 5.0f;
+                Destroy(timeErrorText);
+            }
+        }
+        if (taskErrorText != null)
+        {
+            if (taskErrorTextTimer > 0.0f)
+            {
+                taskErrorTextTimer -= Time.deltaTime;
+            }
+            else
+            {
+                taskErrorTextTimer = 5.0f;
+                Destroy(taskErrorText);
+            }
+        }
+    }
 
     private void AddTaskToList(string taskName, Vector2 startTime, Vector2 endTime)
     {
@@ -190,6 +236,25 @@ public class TaskCreator : MonoBehaviour
             taskWriter.Close();
         }*/
 
-        SceneManager.LoadScene("MainScene");
+        if (taskList.Count > 0)
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+        else
+        {
+            if (taskErrorText == null && timeErrorText == null)
+            {
+                taskErrorText = Instantiate(errorTextPrefab);
+                taskErrorText.name = "TaskErrorText";
+                taskErrorText.GetComponent<TMP_Text>().text = "Please add a task before starting your schedule.";
+                taskErrorText.transform.position = new Vector3(0.0f, 0.0f, -1.0f);
+            }
+
+            else
+            {
+                taskErrorTextTimer = 5.0f;
+            }
+        }
+        
     }
 }

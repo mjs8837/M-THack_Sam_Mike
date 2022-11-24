@@ -4098,6 +4098,7 @@ MonoBehaviour:
   startMinuteDropDown: {fileID: 1524630981}
   endMinuteDropDown: {fileID: 1466705583}
   fillInCalendarPrefab: {fileID: 3957729884654587302, guid: 231e13a1d788ef1429437a8c78e4132d, type: 3}
+  errorTextPrefab: {fileID: 853621799547881224, guid: 12e01a63c8bdb5646b792e9693d82345, type: 3}
   calendarLayout: {fileID: 715701076}
   taskList: []
 --- !u!212 &849239078
