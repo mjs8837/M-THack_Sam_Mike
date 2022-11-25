@@ -20,7 +20,7 @@ public class TaskCreator : MonoBehaviour
 
     // Relavent lists
     private List<GameObject> hourBreaks;
-    public List<GameObject> taskList;
+    public static List<GameObject> taskList;
 
     // Split strings for calculating start and end hour
     string[] startHour;
@@ -49,9 +49,10 @@ public class TaskCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        taskList = new List<GameObject>();
         hourBreaks = new List<GameObject>();
         hourBreaks = calendarLayout.GetComponent<CalendarLayout>().hourBreakList;
-        taskList = new List<GameObject>();
+        
     }
 
     // Update is called once per frame
@@ -61,6 +62,7 @@ public class TaskCreator : MonoBehaviour
         CountErrorTimer();
     }
 
+    // Function to add tasks to the calendar in the scene
     public void AddTaskToCalendar()
     {
         float yPos = new float();
@@ -123,6 +125,14 @@ public class TaskCreator : MonoBehaviour
             return;
         }
 
+        for (int i = 0; i < taskList.Count; i++)
+        {
+            if (GetComponentInChildren<BoxCollider2D>())
+            {
+                return;
+            }
+        }
+
         // Setting up scale and position values
         float multiplier = totalMinutes / 60.0f;
         float minuteOffset = startMinuteFloat / 60.0f;
@@ -133,6 +143,7 @@ public class TaskCreator : MonoBehaviour
         tempCalendarFill.transform.position = new Vector3(-2.6f, yPos, -1.0f);
         tempCalendarFill.transform.localScale = new Vector3(7.0f, multiplier, 1.0f);
 
+        // Looping through all the calendar fill children to populate them correctly
         for (int i = 0; i < tempCalendarFill.GetComponentsInChildren<TMP_Text>().Length; i++)
         {
             // Setting the task name text and its scale appropriately
@@ -169,19 +180,13 @@ public class TaskCreator : MonoBehaviour
                     -1.0f);
             }
         }
-        
-        AddTaskToList(taskInput.GetComponent<TMP_InputField>().text, 
+
+        AddTaskToList(taskName, 
             new Vector2(startHourFloat, startMinuteFloat), 
             new Vector2(endHourFloat, endMinuteFloat));
-
-     /* PlayerPrefs.SetFloat("Task-" + taskList.Count + "-StartHour", startHourFloat);
-        PlayerPrefs.SetFloat("Task-" + taskList.Count + "-EndHour", endHourFloat);
-        PlayerPrefs.SetFloat("Task-" + taskList.Count + "StartMinute", startMinuteFloat);
-        PlayerPrefs.SetFloat("Task-" + taskList.Count + "EndMinute", endMinuteFloat);
-        PlayerPrefs.SetString("Task-" + taskList.Count + "-Name", taskName); 
-     */
     }
     
+    // Helper function to count timers in relavent situations
     private void CountErrorTimer()
     {
         if (timeErrorText != null)
@@ -210,6 +215,7 @@ public class TaskCreator : MonoBehaviour
         }
     }
 
+    // Adds tasks to the task list with proper information
     private void AddTaskToList(string taskName, Vector2 startTime, Vector2 endTime)
     {
         GameObject newTask = new GameObject();
@@ -220,24 +226,16 @@ public class TaskCreator : MonoBehaviour
         taskList.Add(newTask);
     }
 
+    // Function to attempt to switch scenes 
     public void SwtichScene()
     {
-        /*if (!startMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded && !endMinuteDropDown.GetComponent<TMP_Dropdown>().IsExpanded)
-        {
-            // Set up some checks in here to only write a task if conditions are met
-            taskWriter = new StreamWriter(taskPath, true);
-            taskWriter.WriteLine(taskInput.GetComponent<TMP_InputField>().text);
-            startHour = startHourDropDown.GetComponent<TMP_Dropdown>().options[startHourIndex].text.Split(" ");
-            endHour = endHourDropDown.GetComponent<TMP_Dropdown>().options[endHourIndex].text.Split(" ");
-
-            taskWriter.WriteLine(startHour[0] + ":" + startMinuteDropDown.GetComponent<TMP_Dropdown>().options[startMinuteIndex].text + startHour[1]);
-            taskWriter.WriteLine(endHour[0] + ":" + endMinuteDropDown.GetComponent<TMP_Dropdown>().options[endMinuteIndex].text + endHour[1]);
-
-            taskWriter.Close();
-        }*/
-
         if (taskList.Count > 0)
         {
+            for (int i = 0; i < taskList.Count; i++)
+            {
+                DontDestroyOnLoad(taskList[i]);
+            }
+
             SceneManager.LoadScene("MainScene");
         }
         else

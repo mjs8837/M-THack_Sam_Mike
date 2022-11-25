@@ -25,34 +25,12 @@ public class TaskManager : MonoBehaviour
 
     TaskCreator taskCreator;
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-
-        Task tempTask1 = new Task("Homework", new Vector2(12,00), new Vector2(02,30));
-        Task tempTask2 = new Task("Nap", new Vector2(16, 30), new Vector2(18, 00));
-        Task tempTask3 = new Task("Exam", new Vector2(10, 00), new Vector2(11, 50));
-
-        //tasks.Add(tempTask1);
-        tasks.Add(tempTask2);
-        tasks.Add(tempTask3);
-
-        for (int i = 0; i < PlayerPrefs.GetInt("NumTasks"); i++)
+        for (int i = 0; i < TaskCreator.taskList.Count; i++)
         {
-            tasks.Add(new Task
-                (PlayerPrefs.GetString("Task-" + i + "-Name"),
-                new Vector2(PlayerPrefs.GetFloat("Task-" + i + "-StartHour"), PlayerPrefs.GetFloat("Task-" + i + "-StartMinute")),
-                new Vector2(PlayerPrefs.GetFloat("Task-" + i + "-EndHour"), PlayerPrefs.GetFloat("Task-" + i + "-EndMinute"))));
-        }
-
-        for (int i = 0; i < tasks.Count; i++)
-        {
-            Debug.Log(tasks[i].taskType);
+            tasks.Add(TaskCreator.taskList[i].GetComponent<Task>());
         }
     }
 
