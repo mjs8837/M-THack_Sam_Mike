@@ -21,6 +21,7 @@ public class TaskCreator : MonoBehaviour
     // Relavent lists
     private List<GameObject> hourBreaks;
     public static List<GameObject> taskList;
+    [SerializeField] List<GameObject> calendarFills;
 
     // Split strings for calculating start and end hour
     string[] startHour;
@@ -109,7 +110,7 @@ public class TaskCreator : MonoBehaviour
         }
 
         // Breaking out of the function if the user tries to create a task with negative or zero time
-        if (totalMinutes <= 0.0f)
+        if (totalMinutes < 30.0f)
         {
             if (timeErrorText == null && taskErrorText == null)
             {
@@ -125,18 +126,22 @@ public class TaskCreator : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < taskList.Count; i++)
-        {
-            if (GetComponentInChildren<BoxCollider2D>())
-            {
-                return;
-            }
-        }
-
         // Setting up scale and position values
         float multiplier = totalMinutes / 60.0f;
         float minuteOffset = startMinuteFloat / 60.0f;
         yPos = hourBreaks[startHourDropDown.GetComponent<TMP_Dropdown>().value].transform.position.y + 1.0f - minuteOffset;
+
+        for (int i = 0; i < taskList.Count; i++)
+        {
+            if (startHourFloat == taskList[i].GetComponent<Task>().beginningTime[0])
+            {
+                if (startMinuteFloat <= taskList[i].GetComponent<Task>().endingTime[1])
+                {
+                    Debug.Log("TEST");
+                    return;
+                }
+            }
+        }
 
         // Filling the calendar where a task is createds
         GameObject tempCalendarFill = Instantiate(fillInCalendarPrefab);
