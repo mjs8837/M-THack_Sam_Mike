@@ -53,7 +53,6 @@ public class TaskCreator : MonoBehaviour
         taskList = new List<GameObject>();
         hourBreaks = new List<GameObject>();
         hourBreaks = calendarLayout.GetComponent<CalendarLayout>().hourBreakList;
-        
     }
 
     // Update is called once per frame
@@ -133,11 +132,29 @@ public class TaskCreator : MonoBehaviour
 
         for (int i = 0; i < taskList.Count; i++)
         {
-            if (startHourFloat == taskList[i].GetComponent<Task>().beginningTime[0])
+            if (startHourFloat == taskList[i].GetComponentInChildren<Task>().beginningTime[0])
             {
-                if (startMinuteFloat <= taskList[i].GetComponent<Task>().endingTime[1])
+                if (startMinuteFloat > taskList[i].GetComponentInChildren<Task>().endingTime[1])
                 {
-                    Debug.Log("TEST");
+                    /*
+                        6am - 7am : startHourFloat = 6
+                                    endHourFloat = 7
+                                    start/endMinuteFloat = 0
+                                    i = 0
+
+                        7:45am - 9am : startHourFloat = 7
+                                       startMinuteFloat = 45
+                                       endHourFloat = 9
+                                       endHourMinute = 0
+                                       i = 1
+
+                        7am - 7:45am : startHourFloat = 7
+                                       startMinuteFloat = 0
+                                       endHourFloat = 7
+                                       endHourMinute = 30
+                                       i = 2
+                     */
+
                     return;
                 }
             }
@@ -186,7 +203,7 @@ public class TaskCreator : MonoBehaviour
             }
         }
 
-        AddTaskToList(taskName, 
+        AddTaskToList(tempCalendarFill,taskName, 
             new Vector2(startHourFloat, startMinuteFloat), 
             new Vector2(endHourFloat, endMinuteFloat));
     }
@@ -221,14 +238,20 @@ public class TaskCreator : MonoBehaviour
     }
 
     // Adds tasks to the task list with proper information
-    private void AddTaskToList(string taskName, Vector2 startTime, Vector2 endTime)
+    private void AddTaskToList(GameObject objectToAddTo, string taskName, Vector2 startTime, Vector2 endTime)
     {
-        GameObject newTask = new GameObject();
-        newTask.AddComponent<Task>();
-        newTask.GetComponent<Task>().taskType = taskName;
-        newTask.GetComponent<Task>().beginningTime = startTime;
-        newTask.GetComponent<Task>().endingTime = endTime;
-        taskList.Add(newTask);
+        objectToAddTo.GetComponentInChildren<Task>().taskType = taskName;
+        objectToAddTo.GetComponentInChildren<Task>().beginningTime = startTime;
+        objectToAddTo.GetComponentInChildren<Task>().endingTime = endTime;
+        taskList.Add(objectToAddTo);
+    }
+
+    public static void RemoveTaskFromList(GameObject taskToRemove)
+    {
+        if (taskToRemove != null)
+        {
+            taskList.Remove(taskToRemove.transform.parent.gameObject);
+        }
     }
 
     // Function to attempt to switch scenes 

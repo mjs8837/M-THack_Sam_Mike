@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 5319800128782637048}
   - component: {fileID: 8405952919133263304}
   - component: {fileID: 1708277033178484634}
+  - component: {fileID: 6605667103846816146}
   m_Layer: 0
   m_Name: FilledTimeSlot
   m_TagString: Untagged
@@ -145,6 +146,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6605667103846816146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307129501244931702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6984eb6c5de3a842aba8930ab4b3839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskType: Default Task
+  beginningTime: {x: 0, y: 0}
+  endingTime: {x: 0, y: 0}
+  mood: 
+  isCompleted: 0
 --- !u!1 &6669969326362158732
 GameObject:
   m_ObjectHideFlags: 0

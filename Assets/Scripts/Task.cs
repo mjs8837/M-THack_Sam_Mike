@@ -39,4 +39,10 @@ public class Task : MonoBehaviour
     {
         
     }
+
+    private void OnMouseDown()
+    {
+        TaskCreator.RemoveTaskFromList(gameObject);
+        Destroy(gameObject.transform.parent.gameObject);
+    }
 }
