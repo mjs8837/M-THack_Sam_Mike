@@ -30,6 +30,12 @@ public class PhotoManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject[] fillList = GameObject.FindGameObjectsWithTag("Fill");
+        foreach (GameObject gameObject in fillList)
+        {
+            gameObject.SetActive(false);
+        }
+
         displayedPictures = new List<GameObject>();
 
         // Initializing a list of prefabs based on the enum type
